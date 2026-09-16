@@ -287,11 +287,16 @@ class DINOSegmentation:
         ############################################################################
         # TODO: Train your model for `num_iters` steps.                            #
         ############################################################################
-
+        for i in range(num_iters):
+          self.optimizer.zero_grad
+          scores = self.model(X_train)
+          loss = self.loss_function(scores,Y_train)
+          loss.backward()
+          self.optimizer.step()
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
-        pass
+      
     
     @torch.no_grad()
     def inference(self, X_test):
@@ -307,7 +312,8 @@ class DINOSegmentation:
         ############################################################################
         # TODO: Train your model for `num_iters` steps.                            #
         ############################################################################
-
+        scores = self.model(X_test)
+        pred_classes = torch.argmax(scores,dim=-1)
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
